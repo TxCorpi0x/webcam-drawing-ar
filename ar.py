@@ -8,18 +8,18 @@ class MasterPiece:
         self.parameters = cv.aruco.DetectorParameters()
         self.detector = cv.aruco.ArucoDetector(self.dictionary, self.parameters)
 
-    def fit_my_master_piece(self, frame, master_piece):
-        frame_rgb = cv.cvtColor(frame, cv.COLOR_RGB2BGR)
-        frame_expanded = np.expand_dims(frame_rgb, axis=0)
-        scale_percent = 100  # (1000 / frame.shape[0]) * 50
-        width = int(frame.shape[1] * scale_percent / 100)
-        height = int(frame.shape[0] * scale_percent / 100)
-        dim = (width, height)
-        frame = cv.resize(frame, dim, interpolation=cv.INTER_AREA)
-        width2 = int(master_piece.shape[1] * scale_percent / 100)
-        height2 = int(master_piece.shape[0] * scale_percent / 100)
-        dim = (width2, height2)
-        master_piece = cv.resize(master_piece, dim, interpolation=cv.INTER_AREA)
+    def fit_my_master_piece(self, frame, master_piece, scale_percent):
+        if scale_percent != 100:
+            frame_rgb = cv.cvtColor(frame, cv.COLOR_RGB2BGR)
+            frame_expanded = np.expand_dims(frame_rgb, axis=0)
+            width = int(frame.shape[1] * scale_percent / 100)
+            height = int(frame.shape[0] * scale_percent / 100)
+            dim = (width, height)
+            frame = cv.resize(frame, dim, interpolation=cv.INTER_AREA)
+            width2 = int(master_piece.shape[1] * scale_percent / 100)
+            height2 = int(master_piece.shape[0] * scale_percent / 100)
+            dim = (width2, height2)
+            master_piece = cv.resize(master_piece, dim, interpolation=cv.INTER_AREA)
 
         warped = self.find_and_warp(frame, master_piece, cornerIds=(1, 2, 4, 3))
         if warped is not None:

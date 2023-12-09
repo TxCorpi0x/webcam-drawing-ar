@@ -149,7 +149,7 @@ class HandGestureDetector:
                 masterpiece = self.cp.get_frame()
                 self.cp.text_screenshot()
 
-            if masterpiece is not None:
+            if frames_to_finish is None and masterpiece is not None:
                 self.cp.set_masterpiece(masterpiece)
 
             self.set_output()

@@ -4,6 +4,7 @@ import cv2 as cv
 class CameraProcessor:
     def __init__(self, mp_ar) -> None:
         self.mp_ar = mp_ar
+        self.masterpiece_scale = 100
 
     def start(self):
         self.cap = cv.VideoCapture(0)
@@ -24,7 +25,9 @@ class CameraProcessor:
         self.frame = frame
 
     def set_masterpiece(self, masterpiece):
-        ar_image = self.mp_ar.fit_my_master_piece(self.frame, masterpiece)
+        ar_image = self.mp_ar.fit_my_master_piece(
+            self.frame, masterpiece, self.masterpiece_scale
+        )
         self.frame = ar_image
 
     def frame_flip(self):
