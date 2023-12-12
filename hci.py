@@ -9,12 +9,14 @@ import cam
 
 
 class HandGestureDetector:
+    # initialize camera and drawing points
     def __init__(self, mp_ar) -> None:
         self.init_options()
         self.mp_ar = mp_ar
         self.cp = cam.CameraProcessor(mp_ar)
         self.fg_pts = deque(maxlen=64)
 
+    # initialize default options of the hand gesture detection of landmark
     def init_options(self):
         self.mp_drawing = mp.solutions.drawing_utils
         self.mp_hands = mp.solutions.hands
@@ -37,22 +39,31 @@ class HandGestureDetector:
         options = vision.GestureRecognizerOptions(base_options=base_options)
         self.recognizer = vision.GestureRecognizer.create_from_options(options)
 
+    # show modified frame
     def set_output(self):
         cv.imshow("Output", self.cp.rescale_frame(percent=130))
 
+    # detects the hand gesture using landmark recognition
     def detect(self, results_hand, frames_to_finish, idx_to_coordinates):
         take_screenshot = False
+        # create a media pipe image from the current frame
         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=self.cp.get_frame())
+
+        # recognize the hand gestures using landmark
         recognition_result = self.recognizer.recognize(mp_image)
+
         if len(recognition_result.gestures) != 0:
+            # choose the best detected gesture
             top_gesture = recognition_result.gestures[0][0]
+
+            # add detected gesture text and detection score to the frame
             gesture_prediction = (
                 f"{top_gesture.category_name} ({top_gesture.score:.2f})"
             )
-
             self.cp.text_gesture(gesture_prediction)
 
             if results_hand.multi_hand_landmarks:
+                # show detection joints of multiple hands detected
                 for hand_landmarks in results_hand.multi_hand_landmarks:
                     self.mp_drawing.draw_landmarks(
                         image=self.cp.get_frame(),
@@ -61,21 +72,29 @@ class HandGestureDetector:
                         landmark_drawing_spec=self.hand_landmark_drawing_spec,
                         connection_drawing_spec=self.hand_connection_drawing_spec,
                     )
-            if (
-                top_gesture.category_name == "Pointing_Up"
-            ):  # and top_gesture.score > 0.50:
+
+            # process commands according to the detected gesture
+            if top_gesture.category_name == "Pointing_Up":
                 idx_to_coordinates = self.get_idx_to_coordinates(results_hand)
+
+                # append the index finger tip coordinates to the drawing points
                 if 8 in idx_to_coordinates:
                     self.fg_pts.appendleft(idx_to_coordinates[8])  # Index Finger
+
             elif top_gesture.category_name == "Victory":
+                # set the remaining frames to be processed until program closure
                 if frames_to_finish is None:
                     frames_to_finish = 200
                 self.set_output()
+
             elif top_gesture.category_name == "Thumb_Up":
+                # setting this variable as true helps the caller function to understand
+                # this frame should be chosen for screenshot
                 take_screenshot = True
 
         return take_screenshot, frames_to_finish, idx_to_coordinates
 
+    # fills the coordinates of the frame with color
     def draw_finger_points(self):
         for i in range(1, len(self.fg_pts)):
             if self.fg_pts[i - 1] is None or self.fg_pts[i] is None:
@@ -89,6 +108,7 @@ class HandGestureDetector:
                 thickness,
             )
 
+    # returns indices of the points mapped with landmark detected pixels
     def get_idx_to_coordinates(
         self, results, VISIBILITY_THRESHOLD=0.5, PRESENCE_THRESHOLD=0.5
     ):
@@ -126,17 +146,22 @@ class HandGestureDetector:
 
             take_screenshot = False
             if frames_to_finish is not None:
+                # program should be closed after certain frame processing
                 if frames_to_finish == 0:
                     break
+                # gray the frame and set the goodbye text
                 self.cp.to_gray()
                 self.cp.text_goodbye()
 
                 frames_to_finish -= 1
             else:
+                # hand processor needs rgb color
                 self.cp.to_rgb()
                 results_hand = self.hands.process(self.cp.get_frame())
 
                 self.cp.make_frame_writable()
+
+                # change back to bgr to be used fro detector
                 self.cp.to_bgr()
 
                 take_screenshot, frames_to_finish, idx_to_coordinates = self.detect(
