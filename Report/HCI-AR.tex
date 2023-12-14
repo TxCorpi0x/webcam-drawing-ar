@@ -373,7 +373,8 @@
 % was not built to handle multiple paragraphs
 %
 
-\author{Mehdi Valinejad,~\IEEEmembership{Student,~IEEE}% <-this % stops a space
+\author{MEHDI VALINEJAD,~\IEEEmembership{Student}.
+MOHAMMADYOUSEF SADRIALAMDARI,~\IEEEmembership{Student}% <-this % stops a space
 % \thanks{M. Shell was with the Department
 % of Electrical and Computer Engineering, Georgia Institute of Technology, Atlanta,
 % GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}% <-this % stops a space
@@ -710,6 +711,62 @@ manipulate digital content, enhancing the naturalness and engagement of human-co
 % \fnbelowfloat command of the stfloats package.
 
 
+\section{Implemented Method}
+\subsection*{Gesture Detection}
+The formalized design and development of a Python-based application represent a conscientious endeavor to harness real-time webcam 
+video streams and exploit the functionalities of the MediaPipe library, incorporating a landmark hand gesture detection model. 
+The objective of this application is to solicit user commands through discerning Victory and Thumb Up hand gestures. The framework 
+further accommodates the tracking of the index finger tip's spatial coordinates on the screen, leveraging these movements to 
+effectuate a drawing mechanism, metaphorically akin to the operation of a pen with the index finger tip serving as the point of contact.
+
+This application establishes a robust command-handling mechanism within the detector module, facilitating the interpretation of user
+ gestures and triggering specific actions accordingly. In particular, the application is configured to capture the screen, inclusive 
+ of the ongoing drawing, upon the issuance of a specific command.
+
+The intricacies of the application's design are rooted in its capacity to engage with the webcam's live video feed, an attribute that 
+epitomizes real-time interaction. The utilization of the MediaPipe library augments this capability by seamlessly integrating landmark 
+detection models, offering precise tracking of salient points on the user's hand, particularly focusing on the Victory and Thumb Up gestures.
+
+Moreover, the nuanced tracking of the index finger tip emerges as a pivotal feature, enabling users to articulate their creative 
+expressions by translating the finger's movements into a dynamic drawing interface. The application’s gesture recognition module is 
+adept at discerning predefined hand poses, such as Victory and Thumb Up, transforming them into actionable commands within the 
+application's framework.
+
+The comprehensive command-handling module is instrumental in orchestrating specific responses to detected gestures. In this context, 
+the capability to capture screenshots encapsulating the current screen, inclusive of any ongoing drawings, underscores the versatility
+ of this application as a tool for creative expression and documentation.
+
+This formalized application, blending Python programming language with advanced computer vision techniques, exemplifies a paradigm 
+shift in the realm of interactive systems. It not only underscores the convergence of webcam video stream analysis and landmark hand 
+gesture detection but also signifies a synthesis of practical utility and creative expression. As technology continues to evolve, 
+this formalized approach provides a testament to the adaptability and innovation inherent in applications that harmoniously integrate 
+real-time video analysis and human-computer interaction.
+
+\subsection*{Augmented reality}
+Augmenting the aforementioned application's capabilities, the incorporation of ArUco markers introduces an augmented reality (AR) 
+dimension to the framework. This strategic integration enriches the user experience by seamlessly aligning the screenshots, captured 
+through hand gesture commands, within the context of discernible ArUco markers. The symbiosis of these markers and the application's 
+responsive mechanisms supports dynamic movement and perspective transformations, facilitated by rigorous homography calculations.
+
+The introduction of ArUco markers serves as a pivotal element in bridging the virtual and physical realms within the AR paradigm. 
+These markers, strategically placed within the physical environment, become reference points that anchor the AR content. 
+The screenshots obtained through hand gesture commands seamlessly inhabit this augmented space, aligning with the markers and adapting 
+to changes in movement and perspective.
+
+The application, thus, leverages homography calculations to ensure a coherent and immersive AR experience. Homography plays a 
+critical role in mapping the two-dimensional screen space to the three-dimensional world defined by the ArUco markers. This computational
+ process enables the seamless integration of digital content, in this case, the captured screenshots, into the physical environment 
+ captured by the webcam.
+
+The synergistic interplay of ArUco markers, homography calculations, and hand gesture commands unveils a sophisticated framework 
+capable of not only recognizing and responding to user intent but also dynamically situating augmented reality content within the 
+physical context. This intersection of computer vision, augmented reality, and human-computer interaction defines a technologically 
+advanced and versatile application that transcends conventional boundaries.
+
+As technology perpetuates its evolution, this formalized integration of ArUco markers into the application underscores the capacity 
+to propel user interactions beyond mere screen-based interfaces. It exemplifies a forward-thinking approach, wherein augmented reality 
+becomes an integral facet of user engagement, fostering a dynamic and immersive interactive experience.
+
 
 
 \section{Conclusion}
@@ -845,7 +902,8 @@ Received the B.S. degree in industrial engineering from the Azad University (Sou
 \end{IEEEbiographynophoto}
 
 \begin{IEEEbiographynophoto}{Mohammadyousef Sadrialamdari}
-  \end{IEEEbiographynophoto}
+Received the B.S. degree in Electrical-Electronics engineering from the  Istanbul University - Cerrahpasa in 2023, and is currently working Master’s. degree at the University of Bahcesehir at Istanbul.
+\end{IEEEbiographynophoto}
 
 % insert where needed to balance the two columns on the last page with
 % biographies
