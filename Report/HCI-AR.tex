@@ -551,14 +551,14 @@ The journey into this fusion promises to unlock novel possibilities, shaping the
 
 
 
-% === II. Planned Methods ========================
+% === II. Methods and Tools ========================
 % =================================================================================
-\section{Planned Methods and Tools}
+\section{Methods and Tools}
 
 
 \subsection*{1. Landmark Detection}
 Landmark detection, also known as keypoint detection, refers to the process of identifying and locating specific points or 
-features within an image or a visual scene. These points are often distinctive and can be used as references or landmarks 
+features within an image or a visual scene. These points are often distinctive and can be used as references or landmarks (Fig.\ref{fig:landmark_hand})
 for various computer vision tasks. Landmark detection \cite{handsegmentation2023} is a crucial step in understanding and analyzing images, enabling applications 
 in fields such as facial recognition, pose estimation, object tracking, and augmented reality \cite{lin2021ego2hands}.
 
@@ -574,7 +574,7 @@ gestures in real-time video or image streams.
   \includegraphics[width=3.5in]{photo/hand-landmarks.png}
   The list of detected point of the hand by landmark hand detector.
   \caption{Landmark hand gesture detected joints}
-  \label{fig_sim}
+  \label{fig:landmark_hand}
 \end{figure}
 
 \subsection*{2. ArUco markers}
@@ -584,14 +584,14 @@ camera calibration and augmented reality (AR) systems. These markers are black-a
 and identify in images or video frames. using markers we are able to detect critical points in an video stream frame, generally, 
 markers are used for Visual Pattern Recognition, Unique identification, camera calibration and etc. 
 
-OpenCV (Open Source Computer Vision Library) provides a dedicated module for ArUco marker detection, and the implementation is 
+OpenCV (Open Source Computer Vision Library) provides a dedicated module for ArUco marker detection (Fig.\ref{fig:aruco_markers}), and the implementation is 
 based on the ArUco library. The ArUco module in OpenCV is specifically designed for easy integration of ArUco markers into 
 computer vision applications.
 
 \subsection*{3. Homography Finding}
 
 To estimate the transformation matrix (homography matrix) that relates corresponding points in two images of the same scene. OpenCV
-offers builtin homography detection methods that can be used for perspective point matching between real image and the way of residing 
+offers builtin homography detection (Fig.\ref{fig:homography}) methods that can be used for perspective point matching between real image and the way of residing 
 in the the parent image visible area.
 
 \begin{figure}[!t]
@@ -599,7 +599,15 @@ in the the parent image visible area.
   \includegraphics[width=1.5in]{photo/aruco-markers.png}
   Sample chart of ArUco Markers.
   \caption{ArUco Markers}
-  \label{fig_sim}
+  \label{fig:aruco_markers}
+\end{figure}
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=3in]{photo/homography.jpg}
+  Perspective sample of open cv homography detection.
+  \caption{Homography}
+  \label{fig:homography}
 \end{figure}
 
 \section{Expected Results}
@@ -784,9 +792,82 @@ to propel user interactions beyond mere screen-based interfaces. It exemplifies 
 becomes an integral facet of user engagement, fostering a dynamic and immersive interactive experience.
 
 
+\section{Acheived Results}
+\subsection*{Gesture Detection}
+Utilizing the pre-trained gesture recognition model within the OpenCV framework, (Fig.\ref{fig:gesture_detect}), specifically designed for the recognition of the 
+"Thumb Up" and "Victory" gestures, the application facilitates distinct commands, namely "Take Screenshot" and "Goodbye and Close Gently" 
+respectively. When the "Thumb Up" gesture is detected, the application captures the current frame of the webcam, appending the hand 
+drawing to generate a screenshot. This image is then stored in memory for subsequent utilization by the Augmented Reality (AR) module.
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=3.5in]{photo/1.png}
+  Open Palm detected gesture by landmarks model.
+  \caption{Gesture Detection}
+  \label{fig:gesture_detect}
+\end{figure}
+
+Conversely, the "Victory" gesture triggers the execution of the "Goodbye and Close Gently" command. In response to this gesture, the 
+application initiates a process wherein the screen is gradually faded to gray. The program then awaits a predefined count of frames before 
+effecting the closure of the application.
+Furthermore, the application employs the tip of the index finger to mimic the functionality of a pen (Fig.\ref{fig:move_detect}), capturing its movement for artistic 
+purposes. The sequence of points representing the finger-tip pixels is stored in a two-dimensional array, forming the basis of the final 
+painting. To optimize memory usage and computational efficiency, a dequeuing functionality has been implemented to retain only a specified 
+number of recent coordinates of the finger tip. This sequence of points is depicted in a vivid green color, contributing to the creation 
+of the visual masterpiece.
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=3.5in]{photo/2.png}
+  Poining up movement detection by application logic.
+  \caption{Movement Detection}
+  \label{fig:move_detect}
+\end{figure}
+
+\subsection*{Augmented Reality}
+
+The acquired screenshot, resultant from the hand gesture and movement recognition module, is considered a virtual object within the 
+computational framework. This virtual object is subjected to the requirement of aligning itself within the confines of four ArUco markers. 
+Simultaneously, the Augmented Reality (AR) module undertakes the task of scrutinizing the input from the webcam to ascertain a correspondence 
+between the identified markers and the captured screenshot. This matching process is accomplished through the application of OpenCV 
+Marker detector methods.
+
+During each frame analysis, the AR module diligently evaluates the webcam input, discerning the presence of four ArUco markers. Subsequently, 
+the application's underlying code engages in a sophisticated computation to calculate and seamlessly position the screenshot within the 
+spatial bounds defined by the four markers. It is noteworthy that this alignment procedure is executed with meticulous consideration for 
+perspective, ensuring a visually coherent and realistic integration of the virtual object into the augmented environment. This sophisticated 
+synchronization mechanism enhances the immersive quality of the augmented reality experience, exhibiting a commitment to precision and 
+realism within the framework of the application.
 
 \section{Conclusion}
-In this paper, we have explored the synergies of landmark detection, ArUco markers, and hand gesture recognition in the context 
+The current instantiation of the application serves as a proof of concept, strategically designed to demonstrate the formidable synergy 
+between Augmented Reality (AR) and Gesture Detection technologies. It is imperative to underscore that the existing algorithm, while 
+illustrative of the conceptual integration, necessitates a comprehensive reevaluation to attain the level of refinement requisite for 
+deployment in a mature, production-ready product. As a prototypical implementation, the application serves as a foundational framework, 
+warranting iterative enhancements and optimizations (Fig.\ref{fig:gesture_detect}).
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=3.5in]{photo/3.png}
+  Result of the application.
+  \caption{Result}
+  \label{fig:result}
+\end{figure}
+
+Critical to the advancement of this prototype is the recognition of performance bottlenecks inherent in the current implementation. 
+Addressing these concerns demands a meticulous low-level revision, ideally executed in a more expeditious programming language. 
+This imperative revision aims not only to rectify the performance issues plaguing the application but also to fortify its overall efficiency 
+and responsiveness.
+
+The envisioned trajectory of development involves an incisive reassessment of the algorithmic underpinnings, ensuring the alignment of 
+the application with industry standards and user expectations. Concurrently, the migration to a swifter programming language constitutes 
+a strategic imperative, poised to elevate the application's computational speed and responsiveness.
+
+In essence, the present iteration stands as a foundational testament to the amalgamation of AR and Gesture Detection technologies, 
+but its ultimate viability as a mature product necessitates a conscientious recalibration, both algorithmically and in terms of implementation, 
+to fulfill the stringent requisites of a sophisticated and performant application.
+
+In this research, we have explored the synergies of landmark detection, ArUco markers, and hand gesture recognition in the context 
 of webcam video streams, leveraging the capabilities of the OpenCV library. The fusion of these technologies has paved the way for 
 a multifaceted approach to enhancing Human-Computer Interaction (HCI), providing users with a more intuitive and immersive 
 experience in real-time video environments.
@@ -808,8 +889,7 @@ Moreover, the integration of ArUco markers facilitates accurate registration of 
 by the webcam.
 
 The significance of our approach extends to accessibility considerations, as gestural interfaces offer alternative interaction methods 
-for individuals with physical disabilities. Furthermore, the real-time nature of our system enhances its applicability in various contexts, 
-from augmented reality to video conferencing, where natural and expressive gestures can convey a richer form of communication.
+for individuals with physical disabilities.
 
 Looking ahead, the fusion of landmark detection, ArUco markers, and hand gesture recognition in webcam video streams opens avenues 
 for further research and development. Improvements in algorithmic efficiency, robustness, and the exploration of deep learning 
