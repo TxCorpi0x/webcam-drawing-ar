@@ -63,22 +63,56 @@ full names.
  
 
 @misc{lin2021ego2hands,
-      title={Ego2Hands: A Dataset for Egocentric Two-hand Segmentation and Detection}, 
-      author={Fanqing Lin and Brian Price and Tony Martinez},
-      year={2021},
-      eprint={2011.07252},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+  title         = {Ego2Hands: A Dataset for Egocentric Two-hand Segmentation and Detection},
+  author        = {Fanqing Lin and Brian Price and Tony Martinez},
+  year          = {2021},
+  eprint        = {2011.07252},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CV}
 }
 
 @article{handsegmentation2023,
-  title={Lightweight Real Time Hand Segmentation Leveraging MediaPipe Landmark Detection},
-  author={Sánchez-Brizuela, Guillermo and Cisnal, Ana and de la Fuente-Lopez, Eusebio and Fraile, Juan-Carlos and Pérez-Turiel, Javier},
-  journal={Virtual Reality},
-  year={2023}
+  title   = {Lightweight Real Time Hand Segmentation Leveraging MediaPipe Landmark Detection},
+  author  = {Sánchez-Brizuela, Guillermo and Cisnal, Ana and de la Fuente-Lopez, Eusebio and Fraile, Juan-Carlos and Pérez-Turiel, Javier},
+  journal = {Virtual Reality},
+  year    = {2023}
 }
 
+@article{SARMADI2021106296,
+  title    = {Joint scene and object tracking for cost-Effective augmented reality guided patient positioning in radiation therapy},
+  journal  = {Computer Methods and Programs in Biomedicine},
+  volume   = {209},
+  pages    = {106296},
+  year     = {2021},
+  issn     = {0169-2607},
+  doi      = {https://doi.org/10.1016/j.cmpb.2021.106296},
+  url      = {https://www.sciencedirect.com/science/article/pii/S0169260721003709},
+  author   = {Hamid Sarmadi and Rafael Muñoz-Salinas and M. {Álvaro Berbís} and Antonio Luna and R. Medina-Carnicer},
+  keywords = {Patient positioning, Augmented reality, Aruco markers, Generalized ICP, Marker mapper, Surface guided radiation therapy (SGRT)},
+  abstract = {Background and Objective
+              The research is done in the field of Augmented Reality (AR) for patient positioning in radiation therapy is scarce. We propose an efficient and cost-effective algorithm for tracking the scene and the patient to interactively assist the patient’s positioning process by providing visual feedback to the operator. Up to our knowledge, this is the first framework that can be employed for mobile interactive AR to guide patient positioning.
+              Methods
+              We propose a pointcloud processing method that, combined with a fiducial marker-mapper algorithm and the generalized ICP algorithm, tracks the patient and the camera precisely and efficiently only using the CPU unit. The 3D reference model and body marker map alignment is calculated employing an efficient body reconstruction algorithm.
+              Results
+              Our quantitative evaluation shows that the proposed method achieves a translational and rotational error of 4.17 mm/0.82∘ at 9 fps. Furthermore, the qualitative results demonstrate the usefulness of our algorithm in patient positioning on different human subjects.
+              Conclusion
+              Since our algorithm achieves a relatively high frame rate and accuracy employing a regular laptop (without a dedicated GPU), it is a very cost-effective AR-based patient positioning method. It also opens the way for other researchers by introducing a framework that could be improved upon for better mobile interactive AR patient positioning solutions in the future.}
+}
 
+@article{KANSAL2016142,
+  title    = {Vision Based Manipulation of a Regular Shaped Object},
+  journal  = {Procedia Computer Science},
+  volume   = {84},
+  pages    = {142-146},
+  year     = {2016},
+  note     = {Proceeding of the Seventh International Conference on Intelligent Human Computer Interaction (IHCI 2015)},
+  issn     = {1877-0509},
+  doi      = {https://doi.org/10.1016/j.procs.2016.04.079},
+  url      = {https://www.sciencedirect.com/science/article/pii/S1877050916300941},
+  author   = {Sachin Kansal and Sudipto Mukherjee},
+  keywords = {Augmented Reality, Manipulation, Delta robot, Multiple View},
+  abstract = {This paper proposes to attempted is to manipulate an object by a set of three contacts (fingers) i.e. three end effector of the delta robots. As the point of contact with the finger and object changes dynamically, making the problem to have a large degree of variability.This proposal is limited to direct feedback of the object position with respect to the world coordinates and interfacing with the delta robot controlling in real time environment.Detection of markers by three cameras is achieved using ArUco augmented reality library. Experimental results are presented to support the approach in this paper.}
+}
 
 An example of a IEEEtran control entry which can change some IEEEtran.bst
 settings. An entry like this must be cited via \bstctlcite{} command
@@ -141,16 +175,16 @@ prefix text.
 
 
 Those fields that are not to be changed can be left out.
-@IEEEtranBSTCTL{IEEEexample:BSTcontrol,
-  CTLuse_article_number     = "yes",
-  CTLuse_paper              = "yes",
-  CTLuse_forced_etal        = "no",
-  CTLmax_names_forced_etal  = "10",
-  CTLnames_show_etal        = "1",
-  CTLuse_alt_spacing        = "yes",
-  CTLalt_stretch_factor     = "4",
-  CTLdash_repeated_names    = "yes",
-  CTLname_format_string     = "{f.~}{vv~}{ll}{, jj}",
-  CTLname_latex_cmd         = "",
-  CTLname_url_prefix        = "[Online]. Available:"
+@ieeetranbstctl{IEEEexample:BSTcontrol,
+  ctluse_article_number    = {yes},
+  ctluse_paper             = {yes},
+  ctluse_forced_etal       = {no},
+  ctlmax_names_forced_etal = {10},
+  ctlnames_show_etal       = {1},
+  ctluse_alt_spacing       = {yes},
+  ctlalt_stretch_factor    = {4},
+  ctldash_repeated_names   = {yes},
+  ctlname_format_string    = {{f.~}{vv~}{ll}{, jj}},
+  ctlname_latex_cmd        = {},
+  ctlname_url_prefix       = {[Online]. Available:}
 }

@@ -735,7 +735,7 @@ manipulate digital content, enhancing the naturalness and engagement of human-co
 % \fnbelowfloat command of the stfloats package.
 
 
-\section{Method of implentation}
+\section{Implentation Details}
 \subsection*{Gesture Detection}
 The formalized design and development of a Python-based application represent a conscientious endeavor to harness real-time webcam 
 video streams and exploit the functionalities of the MediaPipe library, incorporating a landmark hand gesture detection model. 
@@ -743,7 +743,7 @@ The objective of this application is to solicit user commands through discerning
 further accommodates the tracking of the index finger tip's spatial coordinates on the screen, leveraging these movements to 
 effectuate a drawing mechanism, metaphorically akin to the operation of a pen with the index finger tip serving as the point of contact.
 
-This application is planned to stablish a robust command-handling mechanism within the detector module, facilitating the interpretation of user 
+This application is planned to stablish a robust command-handling mechanism \cite{KANSAL2016142} within the detector module, facilitating the interpretation of user 
 gestures and triggering specific actions accordingly. In particular, the application is going to be configured to capture the screen, inclusive 
 of the ongoing drawing, upon the issuance of a specific command.
 
@@ -832,7 +832,7 @@ Simultaneously, the Augmented Reality (AR) module undertakes the task of scrutin
 between the identified markers and the captured screenshot. This matching process is accomplished through the application of OpenCV 
 Marker detector methods.
 
-During each frame analysis, the AR module diligently evaluates the webcam input, discerning the presence of four ArUco markers. Subsequently, 
+During each frame analysis, the AR module diligently evaluates the webcam input, discerning the presence of four ArUco markers \cite{SARMADI2021106296}. Subsequently, 
 the application's underlying code engages in a sophisticated computation to calculate and seamlessly position the screenshot within the 
 spatial bounds defined by the four markers. It is noteworthy that this alignment procedure is executed with meticulous consideration for 
 perspective, ensuring a visually coherent and realistic integration of the virtual object into the augmented environment. This sophisticated 

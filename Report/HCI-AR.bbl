@@ -31,4 +31,23 @@ G.~Sánchez-Brizuela, A.~Cisnal, E.~de~la Fuente-Lopez, J.-C. Fraile, and
 F.~Lin, B.~Price, and T.~Martinez, ``Ego2hands: A dataset for egocentric
   two-hand segmentation and detection,'' 2021.
 
+\bibitem{KANSAL2016142}
+\BIBentryALTinterwordspacing
+S.~Kansal and S.~Mukherjee, ``Vision based manipulation of a regular shaped
+  object,'' \emph{Procedia Computer Science}, vol.~84, pp. 142--146, 2016,
+  proceeding of the Seventh International Conference on Intelligent Human
+  Computer Interaction (IHCI 2015). [Online]. Available:
+  \url{https://www.sciencedirect.com/science/article/pii/S1877050916300941}
+\BIBentrySTDinterwordspacing
+
+\bibitem{SARMADI2021106296}
+\BIBentryALTinterwordspacing
+H.~Sarmadi, R.~Muñoz-Salinas, M.~{Álvaro Berbís}, A.~Luna, and
+  R.~Medina-Carnicer, ``Joint scene and object tracking for cost-effective
+  augmented reality guided patient positioning in radiation therapy,''
+  \emph{Computer Methods and Programs in Biomedicine}, vol. 209, p. 106296,
+  2021. [Online]. Available:
+  \url{https://www.sciencedirect.com/science/article/pii/S0169260721003709}
+\BIBentrySTDinterwordspacing
+
 \end{thebibliography}
