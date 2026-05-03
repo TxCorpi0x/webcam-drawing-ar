@@ -48,6 +48,13 @@ Keyboard shortcuts are also available for a more mature editing workflow:
 - `r`: redo the last undone stroke,
 - `c`: clear the drawing canvas,
 - `s`: save the current composition as a PNG file.
+- `e`: toggle eraser mode,
+- `1`: switch to red brush,
+- `2`: switch to green brush,
+- `3`: switch to blue brush,
+- `4`: switch to yellow brush,
+- `[`: decrease brush thickness,
+- `]`: increase brush thickness.
 
 The program also exits when the user presses `Esc`.
 
@@ -107,6 +114,7 @@ Once running, the pipeline follows this flow:
 7. If the gesture is `Victory`, initiate shutdown and show a goodbye message.
 8. If a snapshot exists and the AR markers are visible, warp the snapshot into the marker quadrilateral.
 9. If the user triggers undo, redo, clear, or save, update the stroke history or export the current frame accordingly.
+10. If the user changes brush settings or toggles eraser mode, apply the new drawing style to future strokes.
 
 ## **Step 9. Project Structure**
 
@@ -120,7 +128,7 @@ Once running, the pipeline follows this flow:
 ## **Step 10. Notes and Limitations**
 
 - The AR overlay only appears when the required ArUco marker IDs are detected in the expected arrangement.
-- The drawing path now keeps stroke history so the user can undo, redo, clear, and export the composition.
+- The drawing path now keeps stroke history and per-stroke brush settings so the user can undo, redo, clear, export, and switch between colors or eraser mode.
 - The program depends on real-time camera quality, lighting, and hand visibility.
 
 ## **Step 11. Citation and Academic Use**

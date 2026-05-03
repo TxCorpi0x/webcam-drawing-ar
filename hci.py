@@ -25,11 +25,24 @@ class HandGestureDetector:
         self.init_options()
         self.mp_ar = mp_ar
         self.cp = cam.CameraProcessor(mp_ar)
-        self.strokes = []
-        self.current_stroke = []
-        self.redo_strokes = []
-        self.status_message = "U undo | R redo | C clear | S save"
+        self.brush_palette = {
+            "green": (0, 255, 0),
+            "red": (0, 0, 255),
+            "blue": (255, 0, 0),
+            "yellow": (0, 255, 255),
+        }
+        self.brush_name = "green"
+        self.brush_color = self.brush_palette[self.brush_name]
+        self.brush_thickness = 5
+        self.eraser_mode = False
+        self.eraser_radius = 28
+        self.status_message = (
+            "U undo | R redo | C clear | S save | E eraser | 1-4 colors | [ ] size"
+        )
         self.status_message_ticks = 0
+        self.strokes = []
+        self.current_stroke = self._new_stroke()
+        self.redo_strokes = []
 
     # initialize default options of the hand gesture detection of landmark
     def init_options(self):
@@ -41,28 +54,93 @@ class HandGestureDetector:
 
     def clear_drawing(self):
         """Remove all stored strokes and reset redo history."""
-        self.current_stroke.clear()
+        self.current_stroke = self._new_stroke()
         self.strokes.clear()
         self.redo_strokes.clear()
 
+    def _new_stroke(self):
+        return {
+            "points": [],
+            "color": self.brush_color,
+            "thickness": self.brush_thickness,
+        }
+
+    def set_brush_color(self, name):
+        """Select a preset brush color for newly started strokes."""
+        if name not in self.brush_palette:
+            return
+        self.brush_name = name
+        self.brush_color = self.brush_palette[name]
+        self.eraser_mode = False
+        self.set_status_message(f"Brush: {name}")
+
+    def set_brush_thickness(self, thickness):
+        """Clamp and apply a new brush thickness for newly started strokes."""
+        self.brush_thickness = max(1, min(25, thickness))
+        self.set_status_message(f"Thickness: {self.brush_thickness}")
+
+    def increase_thickness(self):
+        self.set_brush_thickness(self.brush_thickness + 1)
+
+    def decrease_thickness(self):
+        self.set_brush_thickness(self.brush_thickness - 1)
+
+    def toggle_eraser_mode(self):
+        """Switch between brush mode and eraser mode."""
+        self.eraser_mode = not self.eraser_mode
+        if self.eraser_mode:
+            self.set_status_message("Eraser mode on")
+        else:
+            self.set_status_message(f"Brush: {self.brush_name}")
+
     def finalize_current_stroke(self):
         """Commit the active point sequence as a completed stroke."""
-        if self.current_stroke:
-            self.strokes.append(self.current_stroke.copy())
-            self.current_stroke.clear()
+        if self.current_stroke["points"]:
+            self.strokes.append(
+                {
+                    "points": self.current_stroke["points"].copy(),
+                    "color": self.current_stroke["color"],
+                    "thickness": self.current_stroke["thickness"],
+                }
+            )
+            self.current_stroke = self._new_stroke()
 
     def add_point_to_stroke(self, point):
         """Append a new drawing point and invalidate redo history when needed."""
         if point is None:
             return
-        if not self.current_stroke:
+        if self.eraser_mode:
+            self.erase_at_point(point)
+            return
+        if not self.current_stroke["points"]:
             self.redo_strokes.clear()
-        self.current_stroke.append(point)
+            self.current_stroke["color"] = self.brush_color
+            self.current_stroke["thickness"] = self.brush_thickness
+        self.current_stroke["points"].append(point)
+
+    def erase_at_point(self, point):
+        """Remove points close to the eraser cursor from all stored strokes."""
+        if point is None:
+            return
+        self.redo_strokes.clear()
+
+        def keep_points(stroke):
+            filtered_points = []
+            for stroke_point in stroke["points"]:
+                distance = np.linalg.norm(np.array(stroke_point) - np.array(point))
+                if distance > self.eraser_radius:
+                    filtered_points.append(stroke_point)
+            stroke["points"] = filtered_points
+
+        keep_points(self.current_stroke)
+        for stroke in self.strokes:
+            keep_points(stroke)
+        self.strokes = [stroke for stroke in self.strokes if stroke["points"]]
 
     def undo_last_stroke(self):
         """Undo the current active stroke or move the last completed stroke to redo."""
-        if self.current_stroke:
-            self.current_stroke.clear()
+        if self.current_stroke["points"]:
+            self.current_stroke = self._new_stroke()
             return
         if self.strokes:
             self.redo_strokes.append(self.strokes.pop())
@@ -192,20 +270,22 @@ class HandGestureDetector:
     # fills the coordinates of the frame with color
     def draw_stroke(self, stroke):
         """Draw one completed or in-progress stroke on the current frame."""
-        if not stroke:
+        if not stroke["points"]:
             return
-        if len(stroke) == 1:
-            cv.circle(self.cp.get_frame(), stroke[0], 3, (0, 255, 0), -1)
+        color = stroke["color"]
+        thickness = stroke["thickness"]
+        points = stroke["points"]
+        if len(points) == 1:
+            cv.circle(self.cp.get_frame(), points[0], max(1, thickness // 2), color, -1)
             return
-        for i in range(1, len(stroke)):
-            if stroke[i - 1] is None or stroke[i] is None:
+        for i in range(1, len(points)):
+            if points[i - 1] is None or points[i] is None:
                 continue
-            thickness = int(np.sqrt(len(stroke) / float(i + 1)) * 4.5)
             cv.line(
                 self.cp.get_frame(),
-                stroke[i - 1],
-                stroke[i],
-                (0, 255, 0),
+                points[i - 1],
+                points[i],
+                color,
                 thickness,
             )
 
@@ -219,12 +299,25 @@ class HandGestureDetector:
         """Overlay the available keyboard controls and status banner."""
         cv.putText(
             self.cp.get_frame(),
-            "U undo  R redo  C clear  S save  Esc exit",
+            "U undo  R redo  C clear  S save  E eraser  1-4 colors  [ ] size  Esc exit",
             (10, 20),
             cv.FONT_HERSHEY_SIMPLEX,
-            0.55,
+            0.5,
             (255, 255, 255),
             2,
+        )
+        mode_text = (
+            f"Mode: {'eraser' if self.eraser_mode else 'brush'} | "
+            f"Color: {self.brush_name} | Size: {self.brush_thickness}"
+        )
+        cv.putText(
+            self.cp.get_frame(),
+            mode_text,
+            (10, 45),
+            cv.FONT_HERSHEY_SIMPLEX,
+            0.5,
+            (0, 255, 255),
+            1,
         )
         if self.status_message_ticks > 0:
             cv.putText(
@@ -324,6 +417,20 @@ class HandGestureDetector:
                 self.set_status_message("Canvas cleared")
             elif key == ord("s"):
                 self.save_composition()
+            elif key == ord("e"):
+                self.toggle_eraser_mode()
+            elif key == ord("1"):
+                self.set_brush_color("red")
+            elif key == ord("2"):
+                self.set_brush_color("green")
+            elif key == ord("3"):
+                self.set_brush_color("blue")
+            elif key == ord("4"):
+                self.set_brush_color("yellow")
+            elif key == ord("["):
+                self.decrease_thickness()
+            elif key == ord("]"):
+                self.increase_thickness()
             elif key == 27:
                 break
         self.cp.stop()
