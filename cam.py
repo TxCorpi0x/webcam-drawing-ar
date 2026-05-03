@@ -25,6 +25,9 @@ class CameraProcessor:
     # it sets private frame variable of the class
     def frame_read(self):
         ret, self.frame = self.cap.read()
+        if not ret:
+            self.frame = None
+        return ret
 
     # return the latest captured frame
     def get_frame(self):
@@ -36,6 +39,7 @@ class CameraProcessor:
 
     # sets the drawing with the screenshot of the current frame
     def set_masterpiece(self, masterpiece):
+        """Overlay the captured frame back into the live scene using AR markers."""
         ar_image = self.mp_ar.fit_my_master_piece(
             self.frame, masterpiece, self.masterpiece_scale
         )
@@ -43,7 +47,7 @@ class CameraProcessor:
 
     # flips the current frame, every time it is called, the current frame flips
     def frame_flip(self):
-        cv.flip(self.frame, 1)
+        self.frame = cv.flip(self.frame, 1)
 
     # sets the current frame as a writable frame
     def make_frame_writable(self):
@@ -63,6 +67,7 @@ class CameraProcessor:
 
     # resize the frame according to the input percentage
     def rescale_frame(self, percent=75):
+        """Return a resized copy of the current frame for display."""
         width = int(self.frame.shape[1] * percent / 100)
         height = int(self.frame.shape[0] * percent / 100)
         dim = (width, height)
